@@ -18,6 +18,8 @@ int main(int argc, string argv[])
 
     // User typed hash to break
     string hash = argv[1];
+
+    puts("I Made a change!");
 }
 
 bool hash_match(string hash, string attempt)
