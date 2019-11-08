@@ -12,14 +12,14 @@ int main(int argc, string argv[])
     // Check for hash after command
     if (argc != 2)
     {
-        puts("Usage: ./crack hash");
+        puts("Usage: ./crack <hash>");
         return 1;
     }
 
     // User typed hash to break
     string hash = argv[1];
 
-    puts("I Made a change!");
+    puts(hash);
 }
 
 bool hash_match(string hash, string attempt)
