@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     // recalculate size variables
     bi.biSizeImage = ((sizeof(RGBTRIPLE) * bi.biWidth) + padding)
         * abs(bi.biHeight);
-    bi.biSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
+    bf.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
         + bi.biSizeImage;
 
     // write outfile's BITMAPFILEHEADER
