@@ -1,5 +1,6 @@
 // Copies a BMP file
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -88,7 +89,7 @@ int main(int argc, char* argv[])
         // skip over padding, if any
         fseek(inptr, padding_old, SEEK_CUR);
 
-        // then add it back (to demonstrate how)
+        // then add it back to the output file (to demonstrate how)
         for (int k = 0; k < padding; k++) {
             fputc(0x00, outptr);
         }
