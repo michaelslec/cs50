@@ -51,7 +51,11 @@ int main(int argc, char* argv[])
     }
 
     // determine padding for scanlines
-    int padding_old = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+    int orig_padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+
+    // save original height and width for nearest-neighbor
+    LONG orig_height = bi.biHeight;
+    LONG orig_width = bi.biWidth;
 
     // calculate new height and width
     bi.biHeight *= res_factor;
@@ -90,7 +94,7 @@ int main(int argc, char* argv[])
     /*     } */
 
     /*     // skip over padding, if any */
-    /*     fseek(inptr, padding_old, SEEK_CUR); */
+    /*     fseek(inptr, orig_padding, SEEK_CUR); */
 
     /*     // then add it back to the output file (to demonstrate how) */
     /*     for (int k = 0; k < padding; k++) { */
