@@ -71,7 +71,6 @@ int main(int argc, char *argv[])
     // recalculate header size information
     bi.biSizeImage = (sizeof(RGBTRIPLE) * bi.biWidth + padding) 
                      * abs(bi.biHeight);
-
     bf.bfSize = sizeof(BITMAPFILEHEADER) 
                 + sizeof(BITMAPINFOHEADER) 
                 + bi.biSizeImage;
@@ -82,14 +81,15 @@ int main(int argc, char *argv[])
     // write outfile's BITMAPINFOHEADER
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
+    // ratio of size between old and new image. Used for nearest_neighbor
+    // algorithm
     double x_ratio = (float)orig_width / bi.biWidth;
     double y_ratio = fabs((float)orig_height / bi.biHeight);
-    int px, py, neighbor_coefficient;
 
     // iterate through new file scanlines
     // NOTE: biHeight is negative
-    printf("bi.biHeight: %d", abs(bi.biHeight));
-    for (int i = 0; i < abs(bi.biHeight); i++)
+    for (int i = 0, px = 0, py = 0, neighbor_coefficient = 0; 
+         i < abs(bi.biHeight); i++)
     {
         // iterate through RGB bytes
         for (int j = 0; j < bi.biWidth; j++)
@@ -97,12 +97,13 @@ int main(int argc, char *argv[])
             // temporary RGB storate
             RGBTRIPLE temp;
 
-            // ratio multiplier for nearest neighbor
+            // essentially, x and y coordinates of of pixel to use in old file
+            // for new file
             px = j * x_ratio;
             py = i * y_ratio;
-            neighbor_coefficient = sizeof(RGBTRIPLE) 
-                                   * (py * orig_width + px) 
-                                   * + (orig_padding * py);
+            neighbor_coefficient = sizeof(RGBTRIPLE) // size of each step
+                                   * (py * orig_width + px) // location of pixel
+                                   + (orig_padding * py); // account for padding
 
             // location of nearest neighbor in original file
             int nearest_neighbor = sizeof(BITMAPFILEHEADER)
@@ -112,12 +113,12 @@ int main(int argc, char *argv[])
             // navigate to nearest neighbor in original file
             fseek(inptr, nearest_neighbor, SEEK_SET);
 
-            // Read RGB from file, then write to new file
+            // Read RGB from original file, then write to new file
             fread(&temp, sizeof(RGBTRIPLE), 1, inptr);
             fwrite(&temp, sizeof(RGBTRIPLE), 1, outptr);
         }
 
-        // then add it back to the output file (to demonstrate how)
+        // append padding to new file
         for (int k = 0; k < padding; k++)
         {
             fputc(0x00, outptr);
