@@ -76,6 +76,50 @@ int main(int argc, char* argv[])
     // write outfile's BITMAPINFOHEADER
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
+    double x_ratio = (float)orig_width / bi.biWidth;
+    double y_ratio = fabs((float)orig_height / bi.biHeight);
+    int px, py, neighbor_coefficient;
+
+    // iterate through new file scanlines
+    // NOTE: biHeight is negative
+    printf("bi.biHeight: %d", abs(bi.biHeight));
+    for (int i = 0; i < abs(bi.biHeight); i++) {
+        // iterate through RGB bytes
+        for (int j = 0; j < bi.biWidth; j++) {
+            // temporary RGB storate
+            RGBTRIPLE temp;
+
+            // ratio multiplier for nearest neighbor
+            px = j * x_ratio;
+            py = i * y_ratio;
+            neighbor_coefficient
+                // size of steps      nearest neighbor algorithm
+                = sizeof(RGBTRIPLE) * (py * orig_width + px)
+                // account for padding
+                + (orig_padding * py);
+
+            // location of nearest neighbor in original file
+            int nearest_neighbor
+                // skip file header
+                = sizeof(BITMAPFILEHEADER)
+                // skip info header
+                + sizeof(BITMAPINFOHEADER)
+                // seek to pixel according to coefficient
+                + neighbor_coefficient;
+
+            // navigate to nearest neighbor in original file
+            fseek(inptr, nearest_neighbor, SEEK_SET);
+
+            // Read RGB from file, then write to new file
+            fread(&temp, sizeof(RGBTRIPLE), 1, inptr);
+            fwrite(&temp, sizeof(RGBTRIPLE), 1, outptr);
+        }
+
+        // then add it back to the output file (to demonstrate how)
+        for (int k = 0; k < padding; k++)
+            fputc(0x00, outptr);
+    }
+
     //
     // OLD COPYING AGLORITHM
     //
