@@ -1,0 +1,17 @@
+TODO:
+  /* - validate input */
+  /* - read raw file */
+  - repeat until end of card
+    - start of a new JPG?
+      - yes->already found a JPEG?
+        - yes
+          - close previous file, open new file, write
+        - no
+          - open new file and write
+      - no->already found a JPEG?
+        - no
+          - skip
+        - yes
+          - write
+  - close infile
+  - return 0
