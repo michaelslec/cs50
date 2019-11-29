@@ -38,19 +38,19 @@ int main(int argc, char *argv[])
             if (file_open)
             {
                 fclose(img);
-                ++nth_jpg;
                 sprintf(filename, "%03zd.jpg", nth_jpg);
                 img = fopen(filename, "w");
                 fwrite(buffer, kbuffer_size, 1, img);
+                ++nth_jpg;
             }
             // first jpg found
             else
             {
                 file_open = 1;
-                ++nth_jpg;
                 sprintf(filename, "%03zd.jpg", nth_jpg);
                 img = fopen(filename, "w");
                 fwrite(buffer, kbuffer_size, 1, img);
+                ++nth_jpg;
             }
         }
         // file is already open, and its not the start of another jpg
