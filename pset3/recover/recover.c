@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        fprintf(stderr, "Usage: ./recover file.jpeg\n");
+        fprintf(stderr, "Usage: ./recover file.jpg\n");
         return 1;
     }
 
@@ -19,9 +19,8 @@ int main(int argc, char *argv[])
         return 2;
     }
 
-    // char didn't work, so short it is
-    const size_t  kbuffer_size = 512;
-    size_t        nth_jpeg     = 0;
+    const size_t  kbuffer_size = 512; // bytes in a block of FAT memory
+    size_t        nth_jpg      = 0; // num of jpg's found
     unsigned char buffer[kbuffer_size];
 
     // eof < 512, so read until can't read 512
@@ -31,11 +30,11 @@ int main(int argc, char *argv[])
         if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff
             && (buffer[3] & 0xf0) == 0xe0)
         {
-            ++nth_jpeg;
+            ++nth_jpg;
         }
     }
 
-    printf("%zd JPG's found\n", nth_jpeg);
+    printf("%zd JPG's found\n", nth_jpg);
 
     // close file to recover
     fclose(inptr);
