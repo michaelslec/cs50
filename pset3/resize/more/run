@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm bigger.bmp
+gcc resize.c -g -lm
+./a.out $1 $2 bigger.bmp
+xdg-open bigger.bmp

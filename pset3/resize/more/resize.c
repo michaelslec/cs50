@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 
     // remember filenames & int
     float res_factor = atof(argv[1]);
-    char *infile = argv[2];
-    char *outfile = argv[3];
+    char *infile     = argv[2];
+    char *outfile    = argv[3];
 
     // open input file
     FILE *inptr = fopen(infile, "r");
@@ -46,7 +46,8 @@ int main(int argc, char *argv[])
     fread(&bi, sizeof(BITMAPINFOHEADER), 1, inptr);
 
     // ensure infile is (likely) a 24-bit uncompressed BMP 4.0
-    if (bf.bfType != 0x4d42 || bf.bfOffBits != 54 || bi.biSize != 40 || bi.biBitCount != 24 || bi.biCompression != 0) 
+    if (bf.bfType != 0x4d42 || bf.bfOffBits != 54 || bi.biSize != 40
+        || bi.biBitCount != 24 || bi.biCompression != 0)
     {
         fclose(outptr);
         fclose(inptr);
@@ -59,7 +60,7 @@ int main(int argc, char *argv[])
 
     // save original height and width for nearest-neighbor
     LONG orig_height = bi.biHeight;
-    LONG orig_width = bi.biWidth;
+    LONG orig_width  = bi.biWidth;
 
     // calculate new height and width
     bi.biHeight *= res_factor;
@@ -69,11 +70,10 @@ int main(int argc, char *argv[])
     int padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
 
     // recalculate header size information
-    bi.biSizeImage = (sizeof(RGBTRIPLE) * bi.biWidth + padding) 
-                     * abs(bi.biHeight);
-    bf.bfSize = sizeof(BITMAPFILEHEADER) 
-                + sizeof(BITMAPINFOHEADER) 
-                + bi.biSizeImage;
+    bi.biSizeImage =
+        (sizeof(RGBTRIPLE) * bi.biWidth + padding) * abs(bi.biHeight);
+    bf.bfSize =
+        sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + bi.biSizeImage;
 
     // write outfile's BITMAPFILEHEADER
     fwrite(&bf, sizeof(BITMAPFILEHEADER), 1, outptr);
@@ -88,7 +88,8 @@ int main(int argc, char *argv[])
 
     // iterate through new file scanlines
     // NOTE: biHeight is negative
-    for (int i = 0, px = 0, py = 0, neighbor_coefficient = 0; 
+    for (int i = 0, px = 0, py = 0, neighbor_coefficient = 0,
+             nearest_neighbor = 0;
          i < abs(bi.biHeight); i++)
     {
         // iterate through RGB bytes
@@ -101,14 +102,15 @@ int main(int argc, char *argv[])
             // for new file
             px = j * x_ratio;
             py = i * y_ratio;
-            neighbor_coefficient = sizeof(RGBTRIPLE) // size of each step
-                                   * (py * orig_width + px) // location of pixel
-                                   + (orig_padding * py); // account for padding
+            neighbor_coefficient =
+                sizeof(RGBTRIPLE) // size of each step
+                    * (py * orig_width + px) // location of pixel
+                + (orig_padding * py); // account for padding
 
             // location of nearest neighbor in original file
-            int nearest_neighbor = sizeof(BITMAPFILEHEADER)
-                                   + sizeof(BITMAPINFOHEADER)
-                                   + neighbor_coefficient;
+            nearest_neighbor = sizeof(BITMAPFILEHEADER)
+                               + sizeof(BITMAPINFOHEADER)
+                               + neighbor_coefficient;
 
             // navigate to nearest neighbor in original file
             fseek(inptr, nearest_neighbor, SEEK_SET);
