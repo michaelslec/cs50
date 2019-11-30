@@ -49,7 +49,7 @@ int main(void)
     while (true)
     {
         // get input
-        string name = get_string("name: ");
+        string name = get_string("name (no input to finish): ");
         size_t first_letter = tolower(name[0]) - 'a';
 
         // no input breaks loop
