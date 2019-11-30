@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     size_t       image_count = 0; // num of jpg's found
     BYTE         buffer[kbuffer_size]; // buffer for one block of FAT memory
     char         filename[8]; // storage for filename 00x.jpg + \0
-    FILE *       img = NULL;
+    FILE        *img = NULL;
 
     // eof < 512, so read until can't read 512
     while (fread(buffer, sizeof(BYTE), kbuffer_size, inptr) == kbuffer_size)
