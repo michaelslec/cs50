@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DICTIONARY	speller.c	15;"	d	file:
+DICTIONARY_H	dictionary.h	4;"	d
+LENGTH	dictionary.h	10;"	d
+N	dictionary.c	10;"	d	file:
+calculate	speller.c	/^double calculate(const struct rusage *b, const struct rusage *a)$/;"	f
+calculate	speller.c	11;"	d	file:
+check	dictionary.c	/^bool check(const char *word)$/;"	f
+children	dictionary.c	/^    struct node *children[N];$/;"	m	struct:node	typeref:struct:node::node	file:
+getrusage	speller.c	12;"	d	file:
+is_word	dictionary.c	/^    bool is_word;$/;"	m	struct:node	file:
+load	dictionary.c	/^bool load(const char *dictionary)$/;"	f
+main	speller.c	/^int main(int argc, char *argv[])$/;"	f
+node	dictionary.c	/^node;$/;"	t	typeref:struct:node	file:
+node	dictionary.c	/^typedef struct node$/;"	s	file:
+root	dictionary.c	/^node *root;$/;"	v
+size	dictionary.c	/^unsigned int size(void)$/;"	f
+std	Makefile	/^	clang -ggdb3 -O0 -Qunused-arguments -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow -c -o dictionary.o dictionary.c$/;"	m
+std	Makefile	/^	clang -ggdb3 -O0 -Qunused-arguments -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow -o speller speller.o dictionary.o$/;"	m
+unload	dictionary.c	/^bool unload(void)$/;"	f
