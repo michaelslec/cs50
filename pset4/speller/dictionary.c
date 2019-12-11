@@ -116,10 +116,42 @@ bool unload(void)
     return false;
 }
 
+void display(node *root, char str[], int level)
+{
+    // If node is leaf node, it indicates end
+    // of string, so a null character is added
+    // and string is displayed
+    if (root->is_word)
+    {
+        str[level] = '\0';
+        printf("%s\n", str);
+    }
+
+    int i;
+    for (i = 0; i < N; i++)
+    {
+        // if NON NULL child is found
+        // add parent key to str and
+        // call the display function recursively
+        // for child node
+        if (root->children[i])
+        {
+            if (i == 26)
+                str[level] = '\'';
+            else
+                str[level] = i + 'a';
+
+            display(root->children[i], str, level + 1);
+        }
+    }
+}
+
 int main(void)
 {
     char word[LENGTH];
-    load("dictionaries/medium");
+    load("dictionaries/large");
+
+    display(root, word, 0);
 
     return 0;
 }
