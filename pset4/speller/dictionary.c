@@ -1,8 +1,10 @@
 // Implements a dictionary's functionality
 
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "dictionary.h"
 
@@ -12,13 +14,14 @@
 // Represents a node in a trie
 typedef struct node
 {
-    bool is_word;
+    bool         is_word;
     struct node *children[N];
-}
-node;
+} node;
 
 // Represents a trie
 node *root;
+
+const int kAPOSTROPHE = -58;
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
@@ -49,7 +52,40 @@ bool load(const char *dictionary)
     // Insert words into trie
     while (fscanf(file, "%s", word) != EOF)
     {
-        // TODO
+        // iterator through trie
+        node *iter = root;
+        int   index = 0;
+
+        for (size_t i = 0; i < strlen(word); ++i)
+        {
+            // a-z enum with a=0
+            index = word[i] - 'a';
+
+            // apostrophe = 39, 'a' = 97, 39 - 97 = -58
+            if (index == kAPOSTROPHE) // -58
+            {
+                index = N - 1;
+            }
+
+            if (!iter->children[index])
+            {
+                // temporary storage
+                node *temp = malloc(sizeof(node));
+
+                // check if memory was allocated
+                if (!temp)
+                {
+                    fprintf(stderr, "could not allocate memory for trie\n");
+                    return false;
+                }
+
+                iter->children[index] = temp;
+            }
+
+            iter = iter->children[index];
+        }
+
+        iter->is_word = true;
     }
 
     // Close dictionary
