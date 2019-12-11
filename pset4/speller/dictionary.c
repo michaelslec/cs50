@@ -115,3 +115,11 @@ bool unload(void)
     // TODO
     return false;
 }
+
+int main(void)
+{
+    char word[LENGTH];
+    load("dictionaries/medium");
+
+    return 0;
+}
