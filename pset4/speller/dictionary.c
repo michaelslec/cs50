@@ -54,7 +54,8 @@ bool load(const char *dictionary)
     {
         // iterator through trie
         node *iter = root;
-        int   index = 0;
+        // holds related array index for char. IE a=0, c=2, '=26
+        int index = 0;
 
         for (size_t i = 0; i < strlen(word); ++i)
         {
@@ -67,6 +68,7 @@ bool load(const char *dictionary)
                 index = N - 1;
             }
 
+            // If node does not exists
             if (!iter->children[index])
             {
                 // temporary storage
@@ -79,12 +81,15 @@ bool load(const char *dictionary)
                     return false;
                 }
 
+                // assign NULL node to real node
                 iter->children[index] = temp;
             }
 
+            // traverse into new node
             iter = iter->children[index];
         }
 
+        // finished for loop represents finished word
         iter->is_word = true;
     }
 
@@ -116,6 +121,7 @@ bool unload(void)
     return false;
 }
 
+// Pulled from https://www.geeksforgeeks.org/trie-display-content/
 void display(node *ptr, char str[], int level)
 {
     // If node is leaf node, it indicates end
