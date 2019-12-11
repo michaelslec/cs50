@@ -30,8 +30,7 @@ int main(int argc, char *argv[])
     struct rusage before, after;
 
     // Benchmarks
-    double time_load = 0.0, time_check = 0.0, time_size = 0.0,
-           time_unload = 0.0;
+    double time_load = 0.0, time_check = 0.0, time_size = 0.0, time_unload = 0.0;
 
     // Determine dictionary to use
     char *dictionary = (argc == 3) ? argv[1] : DICTIONARY;
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
     if (file == NULL)
     {
         printf("Could not open %s.\n", text);
-        unload(); // Unloading because trie structure has been created
+        unload();
         return 1;
     }
 
@@ -65,8 +64,8 @@ int main(int argc, char *argv[])
     printf("\nMISSPELLED WORDS\n\n");
 
     // Prepare to spell-check
-    int  index = 0, misspellings = 0, words = 0;
-    char word[LENGTH + 1]; // max length of word, 45, + end char
+    int index = 0, misspellings = 0, words = 0;
+    char word[LENGTH + 1];
 
     // Spell-check each word in text
     for (int c = fgetc(file); c != EOF; c = fgetc(file))
@@ -82,8 +81,7 @@ int main(int argc, char *argv[])
             if (index > LENGTH)
             {
                 // Consume remainder of alphabetical string
-                while ((c = fgetc(file)) != EOF && isalpha(c))
-                    ;
+                while ((c = fgetc(file)) != EOF && isalpha(c));
 
                 // Prepare for new word
                 index = 0;
@@ -94,8 +92,7 @@ int main(int argc, char *argv[])
         else if (isdigit(c))
         {
             // Consume remainder of alphanumeric string
-            while ((c = fgetc(file)) != EOF && isalnum(c))
-                ;
+            while ((c = fgetc(file)) != EOF && isalnum(c));
 
             // Prepare for new word
             index = 0;
@@ -189,10 +186,10 @@ double calculate(const struct rusage *b, const struct rusage *a)
     }
     else
     {
-        return ((((a->ru_utime.tv_sec * 1000000 + a->ru_utime.tv_usec)
-                  - (b->ru_utime.tv_sec * 1000000 + b->ru_utime.tv_usec))
-                 + ((a->ru_stime.tv_sec * 1000000 + a->ru_stime.tv_usec)
-                    - (b->ru_stime.tv_sec * 1000000 + b->ru_stime.tv_usec)))
+        return ((((a->ru_utime.tv_sec * 1000000 + a->ru_utime.tv_usec) -
+                  (b->ru_utime.tv_sec * 1000000 + b->ru_utime.tv_usec)) +
+                 ((a->ru_stime.tv_sec * 1000000 + a->ru_stime.tv_usec) -
+                  (b->ru_stime.tv_sec * 1000000 + b->ru_stime.tv_usec)))
                 / 1000000.0);
     }
 }

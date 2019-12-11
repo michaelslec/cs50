@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "dictionary.h"
 
@@ -13,19 +12,20 @@
 // Represents a node in a trie
 typedef struct node
 {
-    bool         is_word;
+    bool is_word;
     struct node *children[N];
-} node;
+}
+node;
 
 // Represents a trie
-node *root = NULL;
+node *root;
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
     // Initialize trie
     root = malloc(sizeof(node));
-    if (!root)
+    if (root == NULL)
     {
         return false;
     }
@@ -50,31 +50,32 @@ bool load(const char *dictionary)
     while (fscanf(file, "%s", word) != EOF)
     {
         // TODO
-
-        // Close dictionary
-        fclose(file);
-
-        // Indicate success
-        return true;
     }
 
-    // Returns number of words in dictionary if loaded else 0 if not yet loaded
-    unsigned int size(void)
-    {
-        // TODO
-        return 0;
-    }
+    // Close dictionary
+    fclose(file);
 
-    // Returns true if word is in dictionary else false
-    bool check(const char *word)
-    {
-        // TODO
-        return false;
-    }
+    // Indicate success
+    return true;
+}
 
-    // Unloads dictionary from memory, returning true if successful else false
-    bool unload(void)
-    {
-        // TODO
-        return false;
-    }
+// Returns number of words in dictionary if loaded else 0 if not yet loaded
+unsigned int size(void)
+{
+    // TODO
+    return 0;
+}
+
+// Returns true if word is in dictionary else false
+bool check(const char *word)
+{
+    // TODO
+    return false;
+}
+
+// Unloads dictionary from memory, returning true if successful else false
+bool unload(void)
+{
+    // TODO
+    return false;
+}
