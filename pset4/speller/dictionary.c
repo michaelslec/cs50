@@ -22,6 +22,7 @@ typedef struct node
 node *root;
 
 const int kAPOSTROPHE = -58;
+size_t    dictionary_size = 0;
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
@@ -91,6 +92,7 @@ bool load(const char *dictionary)
 
         // finished for loop represents finished word
         iter->is_word = true;
+        ++dictionary_size;
     }
 
     // Close dictionary
@@ -103,8 +105,7 @@ bool load(const char *dictionary)
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    return dictionary_size;
 }
 
 // Returns true if word is in dictionary else false
