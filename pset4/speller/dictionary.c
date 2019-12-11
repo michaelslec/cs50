@@ -21,8 +21,7 @@ typedef struct node
 // Represents a trie
 node *root;
 
-const int kAPOSTROPHE = -58;
-size_t    dictionary_size = 0;
+size_t dictionary_size = 0;
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
@@ -55,19 +54,10 @@ bool load(const char *dictionary)
     {
         // iterator through trie
         node *iter = root;
-        // holds related array index for char. IE a=0, c=2, '=26
-        int index = 0;
 
-        for (size_t i = 0; i < strlen(word); ++i)
+        for (size_t i = 0, index = 0; i < strlen(word); ++i)
         {
-            // a-z enum with a=0
-            index = word[i] - 'a';
-
-            // apostrophe = 39, 'a' = 97, 39 - 97 = -58
-            if (index == kAPOSTROPHE) // -58
-            {
-                index = N - 1;
-            }
+            index = toindex(word[i]);
 
             // If node does not exists
             if (!iter->children[index])
@@ -118,8 +108,40 @@ bool check(const char *word)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
+
     return false;
+}
+
+int has_children(node *ptr)
+{
+    for (size_t i = 0; i < N; ++i)
+    {
+        if (ptr->children[i])
+            return i;
+    }
+
+    return -1;
+}
+
+char tochar(int index)
+{
+    if (index == N - 1)
+    {
+        return '\'';
+    }
+
+    return index + 'a';
+}
+
+unsigned int toindex(char c)
+{
+    const int kAPOSTROPHE = -58;
+    if (c - 'a' == kAPOSTROPHE)
+    {
+        return N - 1;
+    }
+
+    return c - 'a';
 }
 
 // Pulled from https://www.geeksforgeeks.org/trie-display-content/
