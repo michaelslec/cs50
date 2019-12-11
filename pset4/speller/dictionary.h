@@ -10,9 +10,9 @@
 #define LENGTH 45
 
 // Prototypes
-bool load(const char *dictionary);
+bool         load(const char *dictionary);
 unsigned int size(void);
-bool check(const char *word);
-bool unload(void);
+bool         check(const char *word);
+bool         unload(void);
 
 #endif // DICTIONARY_H
