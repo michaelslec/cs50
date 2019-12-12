@@ -32,7 +32,9 @@ bool load(const char *dictionary)
     {
         return false;
     }
+
     root->is_word = false;
+
     for (int i = 0; i < N; i++)
     {
         root->children[i] = NULL;
@@ -108,10 +110,7 @@ bool check(const char *word)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    node *debug = root; // for debugging purposes
-    // for all children
-    free(root->children[0]);
-
+    // TODO
     return false;
 }
 
@@ -177,13 +176,13 @@ void display(node *ptr, char str[], int level)
     }
 }
 
-int main(void)
-{
-    char word[LENGTH];
-    load("dictionaries/custom");
-    unload();
-
-    /* display(root, word, 0); */
-
-    return 0;
-}
+/* int main(void) */
+/* { */
+/*     char word[LENGTH]; */
+/*     load("dictionaries/custom"); */
+/*     unload(); */
+/*  */
+/*     #<{(| display(root, word, 0); |)}># */
+/*  */
+/*     return 0; */
+/* } */
