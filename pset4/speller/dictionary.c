@@ -46,13 +46,12 @@ char tochar(int index)
 
 unsigned int toindex(char c)
 {
-    const int kAPOSTROPHE = -58;
-    if (c - 'a' == kAPOSTROPHE)
+    if (c == '\'')
     {
         return N - 1;
     }
 
-    return c - 'a';
+    return tolower(c) - 'a';
 }
 
 node* create_trie()
@@ -152,8 +151,25 @@ unsigned int size(void)
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // TODO
-    return false;
+    // pointer to traverse trie
+    node *ptr = root;
+
+    // for each character in word
+    for (size_t i = 0, index = 0; i < strlen(word); ++i)
+    {
+        // get index of char
+        index = toindex(word[i]);
+
+        ptr = ptr->children[index];
+
+        // if letter does not exist
+        if (ptr == NULL)
+        {
+            return false;
+        } 
+    }
+
+    return ptr->is_word;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
