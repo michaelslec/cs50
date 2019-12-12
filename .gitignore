@@ -1,3 +1,8 @@
 *.out
 .nvimlog
 *.bmp
+tags
+*.o
+.h.*
+bin/
+bin/*
