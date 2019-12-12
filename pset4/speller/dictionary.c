@@ -74,6 +74,19 @@ node* create_trie()
     return temp;
 }
 
+void free_trie(node *trav)
+{
+    for (size_t i = 0; i < N; i++)
+    {
+        if(trav->children[i] != NULL)
+        {
+            free_trie(trav->children[i]);
+        }
+    }
+
+    free(trav);
+}
+
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
@@ -146,7 +159,14 @@ bool check(const char *word)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
+
+    if(root != NULL)
+    {
+        node *trie = root;
+        free_trie(trie);
+        return true;
+    }
+
     return false;
 }
 
@@ -180,13 +200,13 @@ void display(node *ptr, char str[], int level)
     }
 }
 
-int main(void)
-{
-    char word[LENGTH];
-    load("dictionaries/custom");
-    /* unload(); */
-
-    /* display(root, word, 0); */
-
-    return 0;
-}
+/* int main(void) */
+/* { */
+/*     char word[LENGTH]; */
+/*     load("dictionaries/custom"); */
+/*     unload(); */
+/*  */
+/*     display(root, word, 0); */
+/*  */
+/*     return 0; */
+/* } */
