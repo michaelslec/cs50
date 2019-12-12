@@ -1,8 +1,9 @@
 *.out
+*.txt
 .nvimlog
 *.bmp
 tags
 *.o
-.h.*
+*.h*
 bin/
 bin/*
