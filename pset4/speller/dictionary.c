@@ -156,8 +156,7 @@ void display(node *ptr, char str[], int level)
         printf("%s\n", str);
     }
 
-    int i;
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         // if NON NULL child is found
         // add parent key to str and
