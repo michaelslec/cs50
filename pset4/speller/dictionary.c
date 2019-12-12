@@ -20,6 +20,7 @@ typedef struct node
 
 // Represents a trie
 node *root;
+node *unloader;
 
 size_t dictionary_size = 0;
 
@@ -88,6 +89,9 @@ bool load(const char *dictionary)
     // Close dictionary
     fclose(file);
 
+    // Sets up unloader
+    unloader = root;
+
     // Indicate success
     return true;
 }
@@ -108,6 +112,16 @@ bool check(const char *word)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
+    node *debug = root; // for debugging purposes
+    // for all children
+    for (size_t i = 0; i < N; ++i)
+    {
+        if (unloader->children[i]) // has a child;
+        {
+            unloader = unloader->children[i];
+            unload();
+        }
+    }
 
     return false;
 }

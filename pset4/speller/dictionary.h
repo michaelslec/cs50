@@ -10,6 +10,7 @@
 #define LENGTH 45
 typedef struct node node;
 node *              root;
+node *              unloader;
 
 // Prototypes
 bool         load(const char *dictionary);
