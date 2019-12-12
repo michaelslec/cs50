@@ -19,32 +19,43 @@ typedef struct node
 } node;
 
 // Represents a trie
-node *root;
+node *root = NULL;
 
 size_t dictionary_size = 0;
+
+node* create_trie()
+{
+    node *temp = malloc(sizeof(node));
+    if (temp == NULL)
+    {
+        fprintf(stderr, "Could not allocate memory for trie\n");
+        return false;
+    }
+
+    temp->is_word = false;
+
+    for (int i = 0; i < N; i++)
+    {
+        temp->children[i] = NULL;
+    }
+
+    return temp;
+}
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    // Initialize trie
-    root = malloc(sizeof(node));
-    if (root == NULL)
-    {
-        return false;
-    }
-
-    root->is_word = false;
-
-    for (int i = 0; i < N; i++)
-    {
-        root->children[i] = NULL;
-    }
-
     // Open dictionary
     FILE *file = fopen(dictionary, "r");
     if (file == NULL)
     {
-        unload();
+        return false;
+    }
+
+    // Initialize trie
+    root = create_trie();
+    if (root == NULL)
+    {
         return false;
     }
 
@@ -57,25 +68,18 @@ bool load(const char *dictionary)
         // iterator through trie
         node *iter = root;
 
+        // insert word into trie
         for (size_t i = 0, index = 0; i < strlen(word); ++i)
         {
+            // returns index to insert current letter
+            // EX: a = 0, c = 2, ' = 26
             index = toindex(word[i]);
 
             // If node does not exists
             if (iter->children[index] == NULL)
             {
-                // temporary storage
-                node *temp = malloc(sizeof(node));
-
-                // check if memory was allocated
-                if (temp == NULL)
-                {
-                    fprintf(stderr, "could not allocate memory for trie\n");
-                    return false;
-                }
-
                 // assign NULL node to real node
-                iter->children[index] = temp;
+                iter->children[index] = create_trie();
             }
 
             // traverse into new node

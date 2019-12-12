@@ -12,6 +12,7 @@ typedef struct node node;
 node *              root;
 
 // Prototypes
+node*        create_trie();
 bool         load(const char *dictionary);
 unsigned int size(void);
 bool         check(const char *word);
