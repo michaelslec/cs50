@@ -20,7 +20,6 @@ typedef struct node
 
 // Represents a trie
 node *root;
-node *unloader;
 
 size_t dictionary_size = 0;
 
@@ -61,13 +60,13 @@ bool load(const char *dictionary)
             index = toindex(word[i]);
 
             // If node does not exists
-            if (!iter->children[index])
+            if (iter->children[index] == NULL)
             {
                 // temporary storage
                 node *temp = malloc(sizeof(node));
 
                 // check if memory was allocated
-                if (!temp)
+                if (temp == NULL)
                 {
                     fprintf(stderr, "could not allocate memory for trie\n");
                     return false;
@@ -88,9 +87,6 @@ bool load(const char *dictionary)
 
     // Close dictionary
     fclose(file);
-
-    // Sets up unloader
-    unloader = root;
 
     // Indicate success
     return true;
@@ -114,14 +110,7 @@ bool unload(void)
 {
     node *debug = root; // for debugging purposes
     // for all children
-    for (size_t i = 0; i < N; ++i)
-    {
-        if (unloader->children[i]) // has a child;
-        {
-            unloader = unloader->children[i];
-            unload();
-        }
-    }
+    free(root->children[0]);
 
     return false;
 }
@@ -188,12 +177,13 @@ void display(node *ptr, char str[], int level)
     }
 }
 
-/* int main(void) */
-/* { */
-/*     char word[LENGTH]; */
-/*     load("dictionaries/large"); */
-/*  */
-/*     display(root, word, 0); */
-/*  */
-/*     return 0; */
-/* } */
+int main(void)
+{
+    char word[LENGTH];
+    load("dictionaries/custom");
+    unload();
+
+    /* display(root, word, 0); */
+
+    return 0;
+}
