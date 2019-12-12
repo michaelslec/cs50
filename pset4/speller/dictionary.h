@@ -12,13 +12,14 @@ typedef struct node node;
 node *              root;
 
 // Prototypes
+int          has_children(node *ptr);
+char         tochar(int index);
+unsigned int toindex(char c);
 node*        create_trie();
 bool         load(const char *dictionary);
 unsigned int size(void);
 bool         check(const char *word);
 bool         unload(void);
-int          has_children(node *ptr);
-char         tochar(int index);
-unsigned int toindex(char c);
+void         display(node *ptr, char str[], int level);
 
 #endif // DICTIONARY_H

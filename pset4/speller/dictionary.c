@@ -23,6 +23,38 @@ node *root = NULL;
 
 size_t dictionary_size = 0;
 
+int has_children(node *ptr)
+{
+    for (size_t i = 0; i < N; ++i)
+    {
+        if (ptr->children[i])
+            return i;
+    }
+
+    return -1;
+}
+
+char tochar(int index)
+{
+    if (index == N - 1)
+    {
+        return '\'';
+    }
+
+    return index + 'a';
+}
+
+unsigned int toindex(char c)
+{
+    const int kAPOSTROPHE = -58;
+    if (c - 'a' == kAPOSTROPHE)
+    {
+        return N - 1;
+    }
+
+    return c - 'a';
+}
+
 node* create_trie()
 {
     node *temp = malloc(sizeof(node));
@@ -118,38 +150,6 @@ bool unload(void)
     return false;
 }
 
-int has_children(node *ptr)
-{
-    for (size_t i = 0; i < N; ++i)
-    {
-        if (ptr->children[i])
-            return i;
-    }
-
-    return -1;
-}
-
-char tochar(int index)
-{
-    if (index == N - 1)
-    {
-        return '\'';
-    }
-
-    return index + 'a';
-}
-
-unsigned int toindex(char c)
-{
-    const int kAPOSTROPHE = -58;
-    if (c - 'a' == kAPOSTROPHE)
-    {
-        return N - 1;
-    }
-
-    return c - 'a';
-}
-
 // Pulled from https://www.geeksforgeeks.org/trie-display-content/
 void display(node *ptr, char str[], int level)
 {
@@ -180,13 +180,13 @@ void display(node *ptr, char str[], int level)
     }
 }
 
-/* int main(void) */
-/* { */
-/*     char word[LENGTH]; */
-/*     load("dictionaries/custom"); */
-/*     unload(); */
-/*  */
-/*     #<{(| display(root, word, 0); |)}># */
-/*  */
-/*     return 0; */
-/* } */
+int main(void)
+{
+    char word[LENGTH];
+    load("dictionaries/custom");
+    /* unload(); */
+
+    /* display(root, word, 0); */
+
+    return 0;
+}
